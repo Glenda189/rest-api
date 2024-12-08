@@ -1,23 +1,24 @@
-'use strict';
+const jwt = require('jsonwebtoken');
 
-const auth = require('basic-auth');
-const { User } = require('../models');
-const bcrypt = require('bcrypt');
-
-const authenticateUser = async (req, res, next) => {
-  const credentials = auth(req);
-  if (credentials) {
-    const user = await User.findOne({ where: { emailAddress: credentials.name } });
-    if (user) {
-      // Compare passwords asynchronously
-      const isPasswordCorrect = await bcrypt.compare(credentials.pass, user.password);
-      if (isPasswordCorrect) {
-        req.currentUser = user;
-        return next();
-      }
-    }
+// Middleware to authenticate user
+const authenticateUser = (req, res, next) => {
+  if (!req.headers.authorization) {
+    return res.status(401).json({ message: 'Authorization header missing' });
   }
-  res.status(401).json({ message: 'Access denied' });
+  
+  const token = req.headers.authorization.split(' ')[1]; // Get token from Authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication required' });
+  }
+  jwt.verify(token, 'Apple', (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+
+    req.user = decoded; // Attach decoded user information to the request
+    next();
+  });
 };
 
 module.exports = { authenticateUser };
