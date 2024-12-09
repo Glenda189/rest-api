@@ -18,7 +18,7 @@ router.post('/', asyncHandler(async (req, res) => {
       await User.create({ firstName, lastName, emailAddress, password });
       res.status(201).location('/').end();
     } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError') {
+      if (error.name === 'SequelizeUniqueValidationError') {
         res.status(400).json({ message: 'Email address is already in use' });
       } else {
         throw error;

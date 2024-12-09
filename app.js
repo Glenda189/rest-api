@@ -20,6 +20,10 @@ app.use((err, req, res, next) =>{
   res.status(err.status ||500).json({message: err.message});
 });
 
+// Database message and start server message 
+sequelize.authenticate()
+.then(() => console.log('Successfully connected to database'))
+.catch((error) => console.error('Error connecting to the database:', error))
 
 // Sync the database and start the server
 sequelize.sync().then(() => {
