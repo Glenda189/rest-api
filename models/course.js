@@ -7,6 +7,7 @@ const Course = sequelize.define('Course', {
     allowNull: false,
     validate: {
       notEmpty: { msg: 'Title is required' },
+      notNull: { msg: 'Title can not be empty'}
     },
   },
   description: {
@@ -14,6 +15,7 @@ const Course = sequelize.define('Course', {
     allowNull: false,
     validate: {
       notEmpty: { msg: 'Description is required' },
+      notNull: { msg: 'Description can not be empty'}
     },
   },
   estimatedTime: {

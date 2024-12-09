@@ -17,6 +17,7 @@ app.use('/api/courses', courseRoutes);
 
 // Error Handler 
 app.use((err, req, res, next) =>{
+  console.log(err);
   res.status(err.status ||500).json({message: err.message});
 });
 

@@ -22,18 +22,14 @@ const User = sequelize.define('User', {
   emailAddress: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
-    validate: {
-      notNull: { msg: 'Email address is required' },
-      isEmail: { msg: 'Please provide a valid email address' },
-      isUnique: async (value) => {
-        const exists = await User.findOne({ where: { emailAddress: value } });
-        if (exists) {
-          throw new Error('Email address is already in use');
-        }
-      },
+    unique: {
+      msg: 'Email address is already in use',
     },
+    validate: {
+      isEmail: {msg: 'Please provide a valid email address'},
+      notNull: { msg: 'Email address can not be empty'}
   },
+},
   password: {
     type: DataTypes.STRING,
     allowNull: false,

@@ -10,16 +10,17 @@ const router = express.Router();
 router.post('/', asyncHandler(async (req, res) => {
     const { firstName, lastName, emailAddress, password } = req.body;
   
-    if (!firstName || !lastName || !emailAddress || !password) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
-  
     try {
-      await User.create({ firstName, lastName, emailAddress, password });
+      await User.create(req.body);
       res.status(201).location('/').end();
     } catch (error) {
-      if (error.name === 'SequelizeUniqueValidationError') {
-        res.status(400).json({ message: 'Email address is already in use' });
+      console.log(error);
+      if (error.name === 'SequelizeValidationError') {
+        const errors = error.errors.map(err => err.message);
+        return res.status(400).json({ errors });
+
+      } else if (error.name === 'SequelizeUniqueConstraintError') {
+        return res.status(400).json({ message: 'Email address is already in use'});   
       } else {
         throw error;
       }
