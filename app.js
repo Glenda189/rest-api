@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const morgan = require('morgan')
 const { sequelize } = require('./config/connection');
 const userRoutes = require('./routes/users');
 const courseRoutes = require('./routes/courses');
@@ -8,7 +9,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-
+app.use(morgan('dev'));
 
 // Routes
 app.use('/api/users', userRoutes);

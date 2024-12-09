@@ -1,6 +1,6 @@
 const express = require('express');
 const { Course, User } = require('../models');
-const asyncHandler = require('../middleware/async-handler');
+const asyncHandler = require('../middleware/async-handler'); // Import async handler middleware
 const { authenticateUser } = require('../middleware/auth-user');  // Import the authenticateUser middleware
 const router = express.Router();
 
@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', asyncHandler(async (req, res) => {
   const courses = await Course.findAll({
     attributes: { excludes: ['createdAt', 'updatedAt']},
-    include: { model: User, attributes: ['id', 'firstName', 'lastName'] }, // Include user data
+    include: { model: User, attributes: ['id', 'firstName', 'lastName'] }, // Include the data from user 
   });
   res.status(200).json(courses);
 }));
@@ -46,7 +46,7 @@ router.post('/', authenticateUser, asyncHandler(async (req, res) => {
   res.status(201).end();
 }));
 
-// PUT /api/courses/:id - Updates a course and No content on success
+// PUT /api/courses/:id - Updates a course and No content 
 router.put('/:id', authenticateUser, asyncHandler(async (req, res) => {
   const { title, description } = req.body;
 
