@@ -7,7 +7,7 @@ const router = express.Router();
 // GET /api/courses - Returns a list of courses 
 router.get('/', asyncHandler(async (req, res) => {
   const courses = await Course.findAll({
-    attributes: { excludes: ['createdAt', 'updatedAt']},
+    attributes: { exclude: ['createdAt', 'updatedAt']},
     include: { model: User, attributes: ['id', 'firstName', 'lastName', 'emailAddress'] }, // Include the data from user 
   });
   res.status(200).json(courses);
@@ -15,9 +15,10 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // GET /api/courses/:id - Returns a course by ID 
 router.get('/:id', asyncHandler(async (req, res) => {
-  const course = await Course.findByPk(req.params.id, {
-    attributes: { excludes: ['createdAt', 'updatedAt']},
-    include: { model: User, attributes: ['id', 'firstName', 'lastName', 'emailAddress'] },
+  const course = await Course.findAll({
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    include: { model: User, 
+      attributes: ['id', 'firstName', 'lastName', 'emailAddress'] },
   });
 
   if (!course) {

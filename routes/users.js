@@ -4,8 +4,6 @@ const { authenticateUser } = require('../middleware/auth-user');
 const asyncHandler = require('../middleware/async-handler')
 const router = express.Router();
 
-
-
 // Post route to create new user and 201 status
 router.post('/', asyncHandler(async (req, res) => {
     const { firstName, lastName, emailAddress, password } = req.body;
