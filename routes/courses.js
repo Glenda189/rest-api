@@ -15,7 +15,7 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // GET /api/courses/:id - Returns a course by ID 
 router.get('/:id', asyncHandler(async (req, res) => {
-  const course = await Course.findAll({
+  const course = await Course.findByPk( req.params.id, {
     attributes: { exclude: ['createdAt', 'updatedAt'] },
     include: { model: User, 
       attributes: ['id', 'firstName', 'lastName', 'emailAddress'] },
